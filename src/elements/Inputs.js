@@ -4,6 +4,7 @@ import { Text, Grid } from "."
 
 export const Inputs = (props) => {
   const { label, placeholder, _onChange, type } = props
+
   return (
     <>
       <Grid>

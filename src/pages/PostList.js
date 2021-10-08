@@ -6,26 +6,24 @@ import { actionCreators as postActions } from "../redux/modules/post"
 
 export const PostList = (props) => {
   const dispatch = useDispatch()
-  const post_list = useSelector((state) => console.log("asd", state.post))
+
+  const post_list = useSelector((state) => state.post.post_list)
 
   useEffect(() => {
-    dispatch(postActions.getPostFB())
+    if (post_list.length === 0) {
+      dispatch(postActions.getPostFB())
+    }
   }, [])
-  console.log("olsdf", post_list)
+
   return (
     <>
-      <Grid>
-        <Post />
-      </Grid>
-      <Grid>
-        <Post />
-      </Grid>
-      <Grid>
-        <Post />
-      </Grid>
-      <Grid>
-        <Post />
-      </Grid>
+      {post_list.map((e, i) => {
+        return (
+          <Grid key={i}>
+            <Post {...e} />
+          </Grid>
+        )
+      })}
     </>
   )
 }

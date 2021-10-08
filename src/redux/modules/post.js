@@ -25,27 +25,105 @@ const initialState = {
 }
 
 const initialPost = {
+  id: 0,
+  user_info: {
+    nickname: "재일",
+    user_profile:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK0UZUOTlXVlH90c5kSpdzwLiIcRAYTUr4oA&usqp=CAU",
+  },
   img_url:
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK0UZUOTlXVlH90c5kSpdzwLiIcRAYTUr4oA&usqp=CAU",
-  comment: "피카츄당",
-  comment_cnt: 0,
+  comment: "",
   comment_date: moment().format("YYYY-MM-DD hh:mm:ss"),
+  like_cnt: 0,
+  layout: {
+    centerText: false,
+    rightText: false,
+    leftText: false,
+  },
 }
 
 // 미들웨어
 
-const getPostFB = () => {
+const addPostFB = (layouts, comment) => {
   return function (dispatch, getState, { history }) {
-    const post_list = firestore.collection("post")
+    const postDB = firestore.collection("post")
+    const _user = getState().user.user
+
+    const _layout = Object.keys(initialPost.layout).forEach((e) => {
+      if (layouts === e) {
+        initialPost.layout[layouts] = true
+      }
+    })
+    const user_info = {
+      id: _user.uid,
+      nickname: _user.nickname,
+      user_profile: _user.user_profile,
+    }
+
+    console.log(_layout)
+
+    const _post = {
+      ...initialPost,
+      comment: comment,
+      comment_date: moment().format("YYYY-MM-DD hh:mm:ss"),
+    }
+
+    postDB
+      .add({ ...user_info, ..._post })
+      .then((doc) => {
+        let post = { user_info, ..._post, id: doc.id }
+        dispatch(addPost(post))
+      })
+      .catch((err) => {
+        console.log(err, "post 작성 에러")
+      })
   }
 }
 
-// 리듀서
+const getPostFB = () => {
+  return function (dispatch, getState, { history }) {
+    const postDB = firestore.collection("post")
+
+    postDB.get().then((docs) => {
+      let postList = []
+      docs.forEach((doc) => {
+        // console.log("aa", doc.id, doc.data())
+        let _post = { id: doc.id, ...doc.data() }
+
+        let post = {
+          id: doc.id,
+          user_info: {
+            nickname: _post.nickname,
+            user_profile: _post.user_profile,
+          },
+          comment: _post.comment,
+          img_url: _post.post_url,
+          comment_date: _post.comment_date,
+          like_cnt: _post.like_cnt,
+          layout: {
+            centerText: _post.layout.centerText,
+            rightText: _post.layout.rightText,
+            leftText: _post.layout.leftText,
+          },
+        }
+        postList.push(post)
+      })
+      dispatch(setPost(postList))
+    })
+  }
+}
 
 export default handleActions(
   {
-    [SET_POST]: (state, action) => produce(state, (draft) => {}),
-    [ADD_POST]: (state, action) => produce(state, (draft) => {}),
+    [SET_POST]: (state, action) =>
+      produce(state, (draft) => {
+        draft.post_list = action.payload.post_list
+      }),
+    [ADD_POST]: (state, action) =>
+      produce(state, (draft) => {
+        draft.post_list.unshift(action.payload.post)
+      }),
     [EDIT_POST]: (state, action) => produce(state, (draft) => {}),
     [LOADING]: (state, action) => produce(state, (draft) => {}),
   },
@@ -58,6 +136,7 @@ const actionCreators = {
   editPost,
   loading,
   getPostFB,
+  addPostFB,
 }
 
 export { actionCreators }

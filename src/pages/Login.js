@@ -12,9 +12,6 @@ export const Login = (props) => {
   const [pwd, setpwd] = useState("")
 
   const login = () => {
-    console.log("login id", id)
-    console.log("login pwd", pwd)
-
     if (id === "" || pwd === "") {
       window.alert("아이디 혹은 비밀번호가 공란입니다! 입력해주세요!")
       return
@@ -26,6 +23,7 @@ export const Login = (props) => {
     }
     dispatch(userActions.logInFB(id, pwd))
   }
+
   return (
     <>
       <Grid padding="94px 16px 16px 16px">
