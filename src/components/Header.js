@@ -20,7 +20,7 @@ export const Header = (props) => {
     return (
       <>
         <HeaderContainer>
-          <Grid is_flex padding="10px 16px" bt>
+          <Grid is_flex padding="10px 16px">
             <Grid>
               <Button
                 text="홈으로"
@@ -50,7 +50,7 @@ export const Header = (props) => {
   return (
     <>
       <HeaderContainer>
-        <Grid is_flex padding="10px 16px" bt>
+        <Grid is_flex padding="10px 16px">
           <Grid>
             <Button
               text="홈으로"
@@ -80,7 +80,8 @@ export const Header = (props) => {
 }
 
 const HeaderContainer = styled.div`
-  width: 100%;
+  width: 70%;
   position: fixed;
   z-index: 999;
+  background-color: black;
 `

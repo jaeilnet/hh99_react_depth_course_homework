@@ -54,7 +54,7 @@ Button.defaultProps = {
 }
 
 const Buttons = styled.button`
-  background-color: black;
+  background-color: #424242;
   color: ${(props) => props.color};
   width: ${(props) => props.width};
   margin: ${(props) => props.margin};

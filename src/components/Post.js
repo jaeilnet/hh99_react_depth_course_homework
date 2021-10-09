@@ -5,7 +5,7 @@ import { Image, Text, Button, Grid } from "../elements"
 export const Post = (props) => {
   const is_login = useSelector((state) => state.user.is_login)
 
-  if (props.layout.centerText === true) {
+  if (props.layout_type === "centerText") {
     return (
       <>
         <Grid padding="62px 0 0 0">
@@ -41,7 +41,7 @@ export const Post = (props) => {
       </>
     )
   }
-  if (props.layout.leftText === true) {
+  if (props.layout_type === "leftText") {
     return (
       <>
         <Grid padding="62px 0 0 0">
@@ -73,7 +73,7 @@ export const Post = (props) => {
       </>
     )
   }
-  if (props.layout.rightText === true) {
+  if (props.layout_type === "rightText") {
     return (
       <>
         <Grid padding="62px 0 0 0">
@@ -105,7 +105,7 @@ export const Post = (props) => {
       </>
     )
   }
-  return <h1>빈란</h1>
+  return <h1>레이아웃 선택오류</h1>
 }
 
 Post.defaultProps = {
@@ -119,9 +119,5 @@ Post.defaultProps = {
   comment: "피카추다아앙",
   like_cnt: 2,
   comment_date: "2021-10-06  11:57:00",
-  layout: {
-    centerText: false,
-    rightText: false,
-    leftText: false,
-  },
+  layout_type: "centerText",
 }

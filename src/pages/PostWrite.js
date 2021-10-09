@@ -16,7 +16,13 @@ export const PostWrite = (props) => {
   }
 
   const writeButton = () => {
+    if (layouts === undefined || comment === undefined) {
+      window.alert("레이아웃을 선택해주세요")
+      return
+    }
+
     dispatch(postActions.addPostFB(layouts, comment))
+    history.push("/")
   }
 
   // if (!is_login) {
@@ -33,7 +39,7 @@ export const PostWrite = (props) => {
           </Text>
         </Grid>
 
-        <Grid padding="16px">
+        <Grid margin="32px">
           <Upload />
         </Grid>
 
@@ -102,7 +108,6 @@ export const PostWrite = (props) => {
             text="글 작성하기"
             _onClick={() => {
               writeButton()
-              history.push("/")
             }}
           ></Button>
         </Grid>

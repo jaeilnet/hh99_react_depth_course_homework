@@ -32,7 +32,7 @@ function App() {
 
   return (
     <>
-      <Grid>
+      <Grid width="70%" margin="auto">
         <Header />
         <ConnectedRouter history={history}>
           <Route path="/" exact component={PostList} />

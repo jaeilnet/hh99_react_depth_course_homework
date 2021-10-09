@@ -25,47 +25,31 @@ const initialState = {
 }
 
 const initialPost = {
-  id: 0,
-  user_info: {
-    nickname: "재일",
-    user_profile:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK0UZUOTlXVlH90c5kSpdzwLiIcRAYTUr4oA&usqp=CAU",
-  },
   img_url:
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK0UZUOTlXVlH90c5kSpdzwLiIcRAYTUr4oA&usqp=CAU",
   comment: "",
   comment_date: moment().format("YYYY-MM-DD hh:mm:ss"),
   like_cnt: 0,
-  layout: {
-    centerText: false,
-    rightText: false,
-    leftText: false,
-  },
+  layout_type: "centerText",
 }
 
 // 미들웨어
 
-const addPostFB = (layouts, comment) => {
+const addPostFB = (layouts, comment = "") => {
   return function (dispatch, getState, { history }) {
     const postDB = firestore.collection("post")
     const _user = getState().user.user
 
-    const _layout = Object.keys(initialPost.layout).forEach((e) => {
-      if (layouts === e) {
-        initialPost.layout[layouts] = true
-      }
-    })
     const user_info = {
       id: _user.uid,
       nickname: _user.nickname,
       user_profile: _user.user_profile,
     }
 
-    console.log(_layout)
-
     const _post = {
       ...initialPost,
       comment: comment,
+      layout_type: layouts,
       comment_date: moment().format("YYYY-MM-DD hh:mm:ss"),
     }
 
@@ -101,11 +85,7 @@ const getPostFB = () => {
           img_url: _post.post_url,
           comment_date: _post.comment_date,
           like_cnt: _post.like_cnt,
-          layout: {
-            centerText: _post.layout.centerText,
-            rightText: _post.layout.rightText,
-            leftText: _post.layout.leftText,
-          },
+          layout_type: _post.layout_type
         }
         postList.push(post)
       })

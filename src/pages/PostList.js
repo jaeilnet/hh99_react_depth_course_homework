@@ -19,7 +19,7 @@ export const PostList = (props) => {
     <>
       {post_list.map((e, i) => {
         return (
-          <Grid key={i}>
+          <Grid key={i} width="70% center">
             <Post {...e} />
           </Grid>
         )
