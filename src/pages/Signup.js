@@ -30,7 +30,6 @@ export const Signup = () => {
 
     dispatch(userActions.signupFB(id, pwd, nickname))
 
-    console.log("가입하기")
   }
   return (
     <>

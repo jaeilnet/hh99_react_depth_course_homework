@@ -10,6 +10,7 @@ import { PostDetail } from "../pages/PostDetail"
 import { PostList } from "../pages/PostList"
 import { PostWrite } from "../pages/PostWrite"
 import { Signup } from "../pages/Signup"
+import { Notification } from "../pages/Notification"
 import { ConnectedRouter } from "connected-react-router"
 import { useDispatch, useSelector } from "react-redux"
 import { apiKey } from "./firebase"
@@ -32,7 +33,7 @@ function App() {
 
   return (
     <>
-      <Grid width="70%" margin="auto">
+      <Grid width="80% " margin="auto" padding="0px 16px" bg="#efefef">
         <Header />
         <ConnectedRouter history={history}>
           <Route path="/" exact component={PostList} />
@@ -40,6 +41,7 @@ function App() {
           <Route path="/write" exact component={PostWrite} />
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={Signup} />
+          <Route path="/alarm" exact component={Notification} />
         </ConnectedRouter>
       </Grid>
       {is_login && is_session ? (

@@ -45,7 +45,7 @@ Button.defaultProps = {
   color: "#ffffff",
   text: false,
   bg: false,
-  width: "80px",
+  width: "75px",
   _onClick: () => {},
   padding: "10px",
   margin: "0px 4px",

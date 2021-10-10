@@ -7,11 +7,13 @@ const UPLOADING = "UPLOADING"
 const SET_PREVIEW = "SET_PREVIEW"
 
 const uploading = createAction(UPLOADING, (uploading) => ({ uploading }))
-const upload_img = createAction(UPLOAD_IMG, (image_url) => ({ image_url }))
+const upload_img = createAction(UPLOAD_IMG, (post_url) => ({ post_url }))
+const preview = createAction(SET_PREVIEW, (preview) => ({ preview }))
 
 const initialState = {
-  image_url: "",
+  post_url: "",
   uploading: false,
+  preview: null,
 }
 
 const uploadImgFB = (image) => {
@@ -36,8 +38,12 @@ export default handleActions(
     [UPLOAD_IMG]: (state, action) =>
       produce(state, (draft) => {
         console.log(action.payload)
-        draft.image_url = action.payload.image_url
+        draft.post_url = action.payload.post_url
         draft.uploading = false
+      }),
+    [SET_PREVIEW]: (state, action) =>
+      produce(state, (draft) => {
+        draft.preview = action.payload.preview
       }),
   },
   initialState
@@ -47,6 +53,8 @@ const actionsCreators = {
   upload_img,
   uploading,
   uploadImgFB,
+  preview,
 }
+
 
 export { actionsCreators }

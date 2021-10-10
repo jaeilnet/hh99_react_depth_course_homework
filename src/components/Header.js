@@ -31,7 +31,12 @@ export const Header = (props) => {
             </Grid>
             <Grid is_flex width="auto">
               <Button text="내 정보"></Button>
-              <Button text="알림" _onClick={() => {}}></Button>
+              <Button
+                text="알림"
+                _onClick={() => {
+                  history.push("/alarm")
+                }}
+              ></Button>
               <Button
                 text="로그아웃"
                 _onClick={() => {
@@ -80,8 +85,6 @@ export const Header = (props) => {
 }
 
 const HeaderContainer = styled.div`
-  width: 70%;
-  position: fixed;
-  z-index: 999;
+  width: auto;
   background-color: black;
 `

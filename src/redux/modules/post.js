@@ -2,6 +2,7 @@ import { createAction, handleActions } from "redux-actions"
 import { produce } from "immer"
 import { firestore, storage } from "../../shared/firebase"
 import moment from "moment"
+import { actionsCreators as imgActions } from "./image"
 
 // 글 가져오기
 const SET_POST = "SET_POST"
@@ -25,7 +26,7 @@ const initialState = {
 }
 
 const initialPost = {
-  img_url:
+  post_url:
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK0UZUOTlXVlH90c5kSpdzwLiIcRAYTUr4oA&usqp=CAU",
   comment: "",
   comment_date: moment().format("YYYY-MM-DD hh:mm:ss"),
@@ -41,9 +42,10 @@ const addPostFB = (layouts, comment = "") => {
     const _user = getState().user.user
 
     const user_info = {
-      id: _user.uid,
+      id: _user.id,
       nickname: _user.nickname,
       user_profile: _user.user_profile,
+      uid: _user.uid,
     }
 
     const _post = {
@@ -53,15 +55,34 @@ const addPostFB = (layouts, comment = "") => {
       comment_date: moment().format("YYYY-MM-DD hh:mm:ss"),
     }
 
-    postDB
-      .add({ ...user_info, ..._post })
-      .then((doc) => {
-        let post = { user_info, ..._post, id: doc.id }
-        dispatch(addPost(post))
-      })
-      .catch((err) => {
-        console.log(err, "post 작성 에러")
-      })
+    const _image = getState().image.preview
+
+    // ref(파일이름)
+    const _upload = storage
+      .ref(`img/${user_info.id}_${new Date().getTime()}`)
+      .putString(_image, "data_url")
+
+    _upload.then((img) => {
+      img.ref
+        .getDownloadURL()
+        .then((url) => {
+          return url
+        })
+        .then((url) => {
+          postDB
+            .add({ ...user_info, ..._post, post_url: url })
+            .then((doc) => {
+              let post = { user_info, ..._post, id: doc.id, post_url: url }
+              dispatch(addPost(post))
+              history.replace("/")
+
+              dispatch(imgActions.preview(null))
+            })
+            .catch((err) => {
+              console.log(err, "post 작성 에러")
+            })
+        })
+    })
   }
 }
 
@@ -78,14 +99,15 @@ const getPostFB = () => {
         let post = {
           id: doc.id,
           user_info: {
+            uid: _post.uid,
             nickname: _post.nickname,
             user_profile: _post.user_profile,
           },
           comment: _post.comment,
-          img_url: _post.post_url,
+          post_url: _post.post_url,
           comment_date: _post.comment_date,
           like_cnt: _post.like_cnt,
-          layout_type: _post.layout_type
+          layout_type: _post.layout_type,
         }
         postList.push(post)
       })

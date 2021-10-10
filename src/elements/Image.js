@@ -2,12 +2,13 @@ import React from "react"
 import styled from "styled-components"
 
 export const Image = (props) => {
-  const { type, src, size, width } = props
+  const { type, src, size, width, paddingTop } = props
   const styles = {
     src,
     size,
     type,
     width,
+    paddingTop,
   }
   if (type === "circle") {
     return (
@@ -27,10 +28,11 @@ export const Image = (props) => {
 }
 
 Image.defaultProps = {
-  src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK0UZUOTlXVlH90c5kSpdzwLiIcRAYTUr4oA&usqp=CAU",
+  src: "http://via.placeholder.com/400x300",
   size: 36,
   type: "circle",
   width: "100%",
+  paddingTop: false,
 }
 
 const CircleImage = styled.div`
@@ -45,7 +47,7 @@ const CircleImage = styled.div`
 `
 
 const RectangleImage = styled.div`
-  padding-top: 75px;
+  ${(props) => (props.paddingTop ? "padding-top : 75px;" : props.padding)}
   width: ${(props) => props.width};
   min-height: 300px;
   background-image: url(${(props) => props.src});

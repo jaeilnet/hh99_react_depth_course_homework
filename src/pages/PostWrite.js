@@ -7,6 +7,7 @@ import { history } from "../redux/configStore"
 
 export const PostWrite = (props) => {
   const is_login = useSelector((state) => state.user.is_login)
+  const preview = useSelector((state) => state.image.preview)
   const dispatch = useDispatch()
   const [layouts, setLayouts] = useState()
   const [comment, setComment] = useState()
@@ -57,7 +58,13 @@ export const PostWrite = (props) => {
           style={{ width: "100%" }}
         />
         <Grid is_flex bt>
-          <Image type="rectangle" width="50%" _onChange={img} />
+          <Image
+            padding="50px"
+            type="rectangle"
+            width="50%"
+            _onChange={img}
+            src={preview ? preview : undefined}
+          />
           <Text margin="auto" center>
             게시글
           </Text>
@@ -76,7 +83,11 @@ export const PostWrite = (props) => {
           <Text margin="auto" center>
             게시글
           </Text>
-          <Image type="rectangle" width="50%" />
+          <Image
+            type="rectangle"
+            width="50%"
+            src={preview ? preview : undefined}
+          />
         </Grid>
         <input
           type="radio"
@@ -91,7 +102,11 @@ export const PostWrite = (props) => {
           <Text margin="auto" center>
             게시글
           </Text>
-          <Image type="rectangle" />
+          <Image
+            paddingTop
+            type="rectangle"
+            src={preview ? preview : undefined}
+          />
         </Grid>
 
         <Grid padding="16px">
@@ -115,3 +130,4 @@ export const PostWrite = (props) => {
     </>
   )
 }
+

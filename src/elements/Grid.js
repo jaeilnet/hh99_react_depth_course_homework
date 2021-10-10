@@ -2,7 +2,17 @@ import React from "react"
 import styled from "styled-components"
 
 export const Grid = (props) => {
-  const { children, width, padding, is_flex, margin, bt, center } = props
+  const {
+    children,
+    width,
+    padding,
+    is_flex,
+    margin,
+    bt,
+    center,
+    _onClick,
+    bg,
+  } = props
   const styles = {
     is_flex,
     width: width,
@@ -10,10 +20,13 @@ export const Grid = (props) => {
     margin,
     bt,
     center,
+    bg,
   }
   return (
     <>
-      <GridBox {...styles}>{children}</GridBox>
+      <GridBox onClick={_onClick} {...styles}>
+        {children}
+      </GridBox>
     </>
   )
 }
@@ -26,6 +39,8 @@ Grid.defaultProps = {
   margin: false,
   bt: false,
   center: false,
+  bg: null,
+  onClick: () => {},
 }
 
 const GridBox = styled.div`
@@ -40,4 +55,5 @@ const GridBox = styled.div`
       : ""}
   margin: ${(props) => (props.center ? "auto" : props.margin)};
   border-bottom: ${(props) => (props.bt ? "4px solid skyblue;" : "")};
+  ${(props) => (props.bg ? `background-color: ${props.bg}` : null)}
 `
